@@ -21,7 +21,7 @@ socketio = SocketIO(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-app.config['SECRET_KEY'] = 'your-key'
+app.config['SECRET_KEY'] = '1a118f8864390243e3381fead7467eee'
 # create database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
@@ -96,7 +96,15 @@ def login():
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
-    
+
+
+@login_required
+@app.route('/logout', methods=['POST', 'GET'])
+def logout():
+    logout_user()
+    flash('You have logged out')
+    redirect(url_for('login'))
+
 # 3. listens for message sent by client
 @socketio.on('message')
 def message_handler(data):
