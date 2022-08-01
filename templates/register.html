@@ -4,11 +4,24 @@
 	<title>Register</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container" >
         <h1> Registration Page </h1>
-        <form method="POST">
+
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+
+        <form method="POST" >
             {{ form.hidden_tag() }}
 
+            {{ form.name.label }}
+            <br>
+            {{ form.name }}
+            <br>
+            {{ form.last_name.label}}
+            <br>
+            {{ form.last_name }}
+            <br>
             {{ form.username.label }}
             <br>
             {{ form.username }}
@@ -24,6 +37,10 @@
             {{ form.confirm_password.label }}
             <br>
             {{ form.confirm_password}}
+            <br>
+            <br>
+            {{ form. submit }}
+
         </form>
 </div>
 	
