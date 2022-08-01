@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Synchronized Slider</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			// 1. sending a connect request to the server.
+			socket = io.connect('http://localhost:5000');
+            console.log(socket)
+
+
+           
+            // 5. broadcasts message
+            function broadcasted_message(data) {
+                console.log(data['message'])
+                console.log('Hit broadcasted')
+                var li_message = document.createElement("li")
+                li_message.innerHTML =data['message']
+                document.querySelector('#list_of_messages').appendChild(li_message)
+            }
+
+            // 4. listens to the new_message channel (reword this)
+            socket.on('new_message', broadcasted_message)
+            // on --> listening 
+            // emit --> calling
+
+        })
+
+        // 2. get input information and send it to the server
+        function send_message() {
+
+            var my_message = document.querySelector("#message").value
+            console.log("send_message function")
+            if (my_message){
+                document.querySelector("#message").value = ''
+                socket.emit('message', {'message':my_message}) // calls whoever is listening on the message channel and sends message
+            }
+        }
+
+	</script>
+
+</head>
+<body>
+    <div class="container"> 
+        <div>
+            <ul id="list_of_messages">
+            
+
+            </ul> 
+        </div>
+        <div>
+            <form action="#" onsubmit= "send_message(); return false" >
+                <input type="text" id="message"> 
+                <button type="submit" > Send </button>
+            </form>
+            
+        </div>
+    </div>
+	
+</body>
+</html>
+
+//user associted with message 
+//adding functionality to user profile aka spotify, ping spotify to see last song or what they are listening to
+//deploy to horuku 
+//possibly add channels
+
+
