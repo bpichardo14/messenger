@@ -23,7 +23,7 @@ socketio = SocketIO(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 CORS(app)
-app.config['SECRET_KEY'] = '1a118f8864390243e3381fead7467eee'
+app.config['SECRET_KEY'] = ''
 # create database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
@@ -112,7 +112,7 @@ def logout():
 @socketio.on('message')
 def message_handler(data):
     print('message sent to server')
-    emit('new_message', data) # calls whoever is listening of new_message
+    emit('new_message', data, broadcast=True) # calls whoever is listening of new_message
 
 
 if __name__ == '__main__':
