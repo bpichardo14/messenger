@@ -23,7 +23,7 @@ socketio = SocketIO(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 CORS(app)
-app.config['SECRET_KEY'] = 'your-key'
+app.config['SECRET_KEY'] = '1a118f8864390243e3381fead7467eee'
 # create database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
