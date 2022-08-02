@@ -9,7 +9,9 @@
 		$(document).ready(function(){
 
 			// 1. sending a connect request to the server.
-			socket = io.connect('http://localhost:5000');
+			socket = io.connect(
+                `${location.protocol}//${document.domain}:${location.port}`
+            );
             console.log(socket)
 
 
