@@ -1,3 +1,4 @@
+from audioop import cross
 from crypt import methods
 from email.utils import format_datetime
 from click import confirm
@@ -9,6 +10,7 @@ from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
 from flask_migrate import Migrate
+from flask_cors import CORS, cross_origin
 
 
 # create flask instance
@@ -20,8 +22,8 @@ socketio = SocketIO(app)
 # initilize databse
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-app.config['SECRET_KEY'] = '1a118f8864390243e3381fead7467eee'
+CORS(app)
+app.config['SECRET_KEY'] = 'your-key'
 # create database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
@@ -40,6 +42,7 @@ class Users(db.Model, UserMixin):
 
 
 @app.route('/')
+@cross_origin()
 def index():
     return render_template('index.html')
 
