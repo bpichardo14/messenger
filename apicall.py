@@ -1,25 +1,20 @@
-import requests
+from flask import redirect
 import os
+import spotipy
+import spotipy.util as util
 
-CLIENT_ID = 'key'
-CLIENT_SECRET = 'key'
+CLIENT_ID = '4d7fed3f38454c82abe7000ed50f7a13'
+CLIENT_SECRET = '9748fcc8cf064b7eb259f2adf4f43abe'
 
-AUTH_URL = 'https://accounts.spotify.com/api/token'
+username = "pichardobrayan"
+scope = "user-read-currently-playing"
+redirect_uri = 'http://localhost:5000/callback/'
 
-auth_response = requests.post(AUTH_URL, {
-    'grant_type': 'client_credentials',
-    'client_id': CLIENT_ID,
-    'client_secret': CLIENT_SECRET,
-})
+token = util.prompt_for_user_token(username, scope, CLIENT_ID, CLIENT_SECRET, redirect_uri)
 
-auth_response_data = auth_response.json()
+sp = spotipy.Spotify(auth=token)
+currentsong = sp.currently_playing()
 
-access_token = auth_response_data['access_token']
-
-headers = {'Authorization': 'Bearer {token}'.format(token=access_token)} #This tells the server(?) that we are authorized to access information?
-
-BASE_URL = 'https://api.spotify.com/v1/'
-# track_id = input('Enter track id: ')
-r = requests.get(BASE_URL + 'me/player/currently-playing/', headers=headers)
-
-print(r.json())
+song_name = currentsong['item']['name']
+song_artist = currentsong['item']['artists'][0]['name']
+print("Now playing {} by {}".format(song_name, song_artist))

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 	<meta charset="UTF-8">
 	<title>Synchronized Slider</title>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -21,6 +23,8 @@
                 console.log(data['message'])
                 console.log('Hit broadcasted')
                 var li_message = document.createElement("li")
+                //styling 
+                li_message.classList.add('you')
                 li_message.innerHTML=data['message']
                 document.querySelector('#list_of_messages').appendChild(li_message)
             }
