@@ -5,3 +5,7 @@ __pycache__
 users.db
 migrations
 apicall
+env/
+.cache-pichardobrayan
+
+
