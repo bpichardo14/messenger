@@ -2,7 +2,7 @@ from audioop import cross
 from crypt import methods
 from email.utils import format_datetime
 from click import confirm
-from flask import Flask, render_template, url_for, redirect, flash
+from flask import Flask, render_template, url_for, redirect, flash, session
 from flask_socketio import SocketIO, emit
 from forms import RegistrationForm, LoginForm
 import os
@@ -11,10 +11,16 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
 from flask_migrate import Migrate
 from flask_cors import CORS, cross_origin
-
+from flask_session import Session
 
 # create flask instance
 app = Flask(__name__)
+
+# app.config["SESSION_PERMANENT"] = False
+# app.config["SESSION_TYPE"] = "filesystem"
+
+# # set up session
+# session = Session(app)
 
 # create socketio instance 
 socketio = SocketIO(app)
@@ -80,9 +86,12 @@ def load_user(id):
 # login page 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    # session.clear()
     form = LoginForm()
 
     if form.validate_on_submit():
+        # session['username']=form.username.data
+
         user = Users.query.filter_by(username=form.username.data).first()
         if user:
             if  Users.query.filter_by(password=form.password.data).first():
