@@ -4,7 +4,7 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 	<meta charset="UTF-8">
-	<title>Synchronized Slider</title>
+	<title>Chat</title>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 	<script type="text/javascript">
@@ -22,12 +22,12 @@
             function broadcasted_message(data) {
                 console.log(data['message'])
                 console.log('Hit broadcasted')
-                var li_message = document.createElement("li")
+                var li_message = document.createElement("p")
                 //styling 
-                li_message.classList.add('you')
+                li_message.classList.add('message')
                 li_message.innerHTML=`${data['username']} ${data['message']}`
 
-                document.querySelector('#list_of_messages').appendChild(li_message)
+                document.querySelector('.body').appendChild(li_message)
             }
 
             // 4. listens to the new_message channel (reword this)
@@ -53,19 +53,25 @@
 </head>
 <body>
     <div class="container"> 
-        <div>
-            <ul id="list_of_messages">
-            
-
-            </ul> 
+        
+        <div class="header"> 
+            <h1>TuneTalks</h1>
         </div>
-        <div>
+        
+        <div class="body">
+
+        </div>
+        
+    
+        <div class="footer">
+
             <form action="#" onsubmit= "send_message(); return false" >
                 <input type="text" id="message"> 
-                <button type="submit" > Send </button>
+                <button type="submit" > SEND </button>
             </form>
             
         </div>
+
     </div>
 	
 </body>

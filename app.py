@@ -47,8 +47,9 @@ class Users(db.Model, UserMixin):
     password = db.Column(db.String(50), nullable=False, unique=True)
 
 
-@app.route('/')
+@app.route('/chat')
 @cross_origin()
+@login_required
 def index():
     return render_template('index.html')
 
@@ -84,7 +85,7 @@ def load_user(id):
 
 
 # login page 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def login():
     # session.clear()
     form = LoginForm()
@@ -106,12 +107,14 @@ def login():
     return render_template('login.html', form=form)
 
 @app.route('/profile')
+@login_required
 def profile():
     return render_template('profile.html')
 
 
-@login_required
+
 @app.route('/logout', methods=['POST', 'GET'])
+@login_required
 def logout():
     logout_user()
     flash('You have logged out')
