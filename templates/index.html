@@ -28,36 +28,54 @@
                 console.log(data['message'])
                 console.log('Hit broadcasted')
 
-                var incoming_msg = document.createElement('div')
+                if (data['username']!="{{ current_user.username }}"){
 
-                incoming_msg.classList.add('incoming_msg')
+                    var incoming_msg = document.createElement('div')
 
-
-                var img = new Image(); 
-                img.src = '../static/images/david.png'
-                img.classList.add('incoming_msg_img')
-
-                var received_msg = document.createElement('div')
-                received_msg.classList.add('received_msg')
+                    incoming_msg.classList.add('incoming_msg')
 
 
-                var received_withd_msg = document.createElement('div')
-                received_withd_msg.classList.add('received_withd_msg')
+                    var img = new Image(); 
+                    img.src = '../static/images/david.png'
+                    img.classList.add('incoming_msg_img')
+
+                    var received_msg = document.createElement('div')
+                    received_msg.classList.add('received_msg')
 
 
-                var li_message = document.createElement("p")
-                li_message.innerHTML=`${data['username']} ${data['message']}`
-
-                incoming_msg.appendChild(img)
-
-                received_withd_msg.appendChild(li_message)
-
-                received_msg.appendChild(received_withd_msg)
-
-                incoming_msg.appendChild(received_msg)
+                    var received_withd_msg = document.createElement('div')
+                    received_withd_msg.classList.add('received_withd_msg')
 
 
-                document.querySelector('.msg_history').appendChild(incoming_msg)
+                    var li_message = document.createElement("p")
+                    li_message.innerHTML=`${data['username']} ${data['message']}`
+
+                    incoming_msg.appendChild(img)
+
+                    received_withd_msg.appendChild(li_message)
+
+                    received_msg.appendChild(received_withd_msg)
+
+                    incoming_msg.appendChild(received_msg)
+
+
+                    document.querySelector('.msg_history').appendChild(incoming_msg)
+                }
+                else{
+                    var outgoing_msg = document.createElement('div')
+                    outgoing_msg.classList.add('outgoing_msg')
+
+                    var sent_msg = document.createElement('div')
+                    sent_msg.classList.add('sent_msg')
+
+                    var paragraph = document.createElement('p')
+
+                    sent_msg.appendChild(paragraph)
+
+                    outgoing_msg.appendChild(sent_msg)
+
+                    document.querySelector('.msg_history').appendChild(outgoing_msg)
+                }
             }
 
             // 4. listens to the new_message channel (reword this)
@@ -82,6 +100,23 @@
 
 </head>
 <!-- <body>
+
+    <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>Apollo University, Delhi, India Test</p>
+                <span class="time_date"> 11:01 AM    |    Today</span> </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
     <div class="container"> 
         
         <div class="header"> 
