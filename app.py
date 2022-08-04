@@ -15,8 +15,6 @@ from flask_cors import CORS, cross_origin
 from flask_session import Session
 from werkzeug.utils import secure_filename
 import uuid as uuid
-import spotipy
-import spotipy.util as util
 from apicall import connect_to_spotify
 
 
