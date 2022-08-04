@@ -36,8 +36,8 @@ migrate = Migrate(app, db)
 CORS(app)
 app.config['SECRET_KEY'] = '1a118f8864390243e3381fead7467eee'
 # create database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://nqbjwsvjatjsqi:ef1f39db0389f0fab79fd22643b8452afbc56f34bd9b497fd4b0ed9e4c6ecf90@ec2-44-205-64-253.compute-1.amazonaws.com:5432/d67tjlvrcobtqe'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://nqbjwsvjatjsqi:ef1f39db0389f0fab79fd22643b8452afbc56f34bd9b497fd4b0ed9e4c6ecf90@ec2-44-205-64-253.compute-1.amazonaws.com:5432/d67tjlvrcobtqe'
 
 # Flask login stuff 
 login_manager = LoginManager()
