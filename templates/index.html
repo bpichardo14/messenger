@@ -4,7 +4,11 @@
 <html lang="en">
 <head> 
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-    <!-- <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 </head> 
 	<meta charset="UTF-8">
 	<title>Chat</title>
@@ -23,21 +27,36 @@
             function broadcasted_message(data) {
                 console.log(data['message'])
                 console.log('Hit broadcasted')
-                var li_container = document.createElement('div')
+
+                var incoming_msg = document.createElement('div')
+                incoming_msg.classList.add('incoming_msg')
+
+
                 var img = new Image(); 
                 img.src = '../static/images/david.png'
-                img.classList.add('img-fluid')
-                img.classList.add('message_img')
+                img.classList.add('incoming_msg_img')
+
+                var received_msg = document.createElement('div')
+                received_msg.classList.add('received_msg')
+
+
+                var received_withd_msg = document.createElement('div')
+                received_withd_msg.classList.add('received_withd_msg')
+
 
                 var li_message = document.createElement("p")
-                li_message.classList.add('message')
                 li_message.innerHTML=`${data['username']} ${data['message']}`
 
-                li_container.appendChild(img)
-                li_container.appendChild(li_message)
+                incoming_msg.appendChild(img)
 
-                
-                document.querySelector('.body').appendChild(li_container)
+                received_withd_msg.appendChild(li_message)
+
+                received_msg.appendChild(received_withd_msg)
+
+                incoming_msg.appendChild(received_msg)
+
+
+                document.querySelector('.msg_history').appendChild(incoming_msg)
             }
 
             // 4. listens to the new_message channel (reword this)
@@ -50,10 +69,10 @@
         // 2. get input information and send it to the server
         function send_message() {
 
-            var my_message = document.querySelector("#message").value
+            var my_message = document.querySelector(".write_msg").value
             console.log("send_message function")
             if (my_message){
-                document.querySelector("#message").value = ''
+                document.querySelector(".write_msg").value = ''
                 socket.emit('message', {'message':my_message, 'username': "{{ current_user.username }}"}) // calls whoever is listening on the message channel and sends message
             }
         }
@@ -61,7 +80,7 @@
 	</script>
 
 </head>
-<body>
+<!-- <body>
     <div class="container"> 
         
         <div class="header"> 
@@ -83,7 +102,130 @@
 
     </div>
 	
-</body>
+</body> -->
+    <body>
+<div class="container">
+<h3 class=" text-center">Messaging</h3>
+<div class="messaging">
+      <div class="inbox_msg">
+        <div class="inbox_people">
+          <div class="headind_srch">
+            <div class="recent_heading">
+              <h4>Recent</h4>
+            </div>
+            <div class="srch_bar">
+              <div class="stylish-input-group">
+                <input type="text" class="search-bar"  placeholder="Search" >
+                <span class="input-group-addon">
+                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                </span> </div>
+            </div>
+          </div>
+          <div class="inbox_chat">
+            <div class="chat_list active_chat">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_ib">
+                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                  <p>Test, which is a new approach to have all solutions 
+                    astrology under one roof.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mesgs">
+          <div class="msg_history">
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>Apollo University, Delhi, India Test</p>
+                <span class="time_date"> 11:01 AM    |    Today</span> </div>
+            </div>
+            <div class="incoming_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p>We work directly with our designers and suppliers,
+                    and sell direct to you, which means quality, exclusive
+                    products, at a price anyone can afford.</p>
+                  <span class="time_date"> 11:01 AM    |    Today</span></div>
+              </div>
+            </div>
+          </div>
+          <form class="type_msg" action="#" onsubmit= "send_message(); return false">
+            <div class="input_msg_write">
+              <input type="text" class="write_msg" placeholder="Type a message" />
+              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      
+    </div></div>
+    </body>
+
+
 </html>
 {% endblock %}
 
