@@ -2,7 +2,7 @@ from audioop import cross
 from crypt import methods
 from email.utils import format_datetime
 from click import confirm
-from flask import Flask, render_template, url_for, redirect, flash, session
+from flask import Flask, render_template, url_for, redirect, flash, session, request
 from flask_socketio import SocketIO, emit
 from forms import RegistrationForm, LoginForm
 import os
@@ -45,6 +45,7 @@ class Users(db.Model, UserMixin):
     last_name = db.Column(db.String(50), nullable=False, unique=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(50), nullable=False, unique=True)
+    profile_pic = db.Column(db.String(), nullable=True)
 
 
 @app.route('/chat')
@@ -53,6 +54,7 @@ class Users(db.Model, UserMixin):
 def index():
     return render_template('index.html')
 
+# REGISTER PAGE
 @app.route('/register', methods=['POST', 'GET'])
 def register():
 
@@ -84,7 +86,7 @@ def load_user(id):
     return Users.query.get(int(id))
 
 
-# login page 
+# LOGIN PAGE 
 @app.route('/', methods=['POST', 'GET'])
 def login():
     # session.clear()
@@ -106,19 +108,42 @@ def login():
 
     return render_template('login.html', form=form)
 
+# PROFILE PAGE
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html')
+    form = RegistrationForm()
+    return render_template('profile.html', form=form)
 
-
-
+# LOGOUT
 @app.route('/logout', methods=['POST', 'GET'])
 @login_required
 def logout():
     logout_user()
     flash('You have logged out')
     redirect(url_for('login'))
+
+
+# UPDATE PROFILE
+@app.route('/update/<int:id>', methods=['POST', 'GET'])
+def update(id):
+    form = RegistrationForm()
+    user_to_update = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        user_to_update.name = request.form['name']
+        user_to_update.last_name = request.form['last_name']
+        user_to_update.username = request.form['username']
+        user_to_update.email = request.form['email']
+        
+        try:
+            db.session.commit()
+            flash('User updated successfuly')
+            return render_template('update.html', form=form, user_to_update=user_to_update)
+        except:
+            flash('Error! Looks like there was problem, but try again!')
+            return render_template('update.html', form=form, user_to_update=user_to_update)
+    else:
+        return render_template('update.html', form=form, user_to_update=user_to_update)
 
 # 3. listens for message sent by client
 @socketio.on('message')

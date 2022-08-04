@@ -34,6 +34,7 @@ body{
 	height: 35px;
 }
 
+
 .body{
 	flex: 1;
 	color: white;
@@ -54,6 +55,11 @@ body{
 	margin-left: auto;
 	background-color: white;
 	color: black;
+}
+
+.message_img{
+	height: 2rem;
+	width: 2rem;
 }
 
 .footer form{

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <div class="container" >
+        <h1> Update User </h1>
+
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+
+        <form method="POST" >
+            {{ form.hidden_tag() }}
+
+            {{ form.name.label }}
+            <br>
+            {{ form.name (value = user_to_update.name)}}
+            <br>
+            {{ form.last_name.label}}
+            <br>
+            {{ form.last_name (value=user_to_update.last_name) }}
+            <br>
+            {{ form.username.label}}
+            <br>
+            {{ form.username (value=user_to_update.username) }}
+            <br>
+            {{ form.email.label }} 
+            <br>
+            {{ form.email (value=user_to_update.email)}}
+            <br>
+            {{ form. submit (value='submit')}}
+        </form>
+</div>
+	
+</body>
+</html>

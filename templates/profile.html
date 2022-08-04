@@ -1,25 +1,57 @@
-
+{% extends 'navbar.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<title>Profile</title>
 </head>
 <body>
-    <div class="container" >
-        <h1> User Profile</h1>
-        <strong> Name: </strong> {{current_user.name}} 
-        <br>
-        <strong> Last Name: </strong> {{current_user.last_name}}
-        <br>
-        <strong> Username: </strong> {{current_user.username}}
-        <br>
-        <strong> User ID: </strong> {{current_user.id}}
-        <br>
-        <strong> Email:   </strong> {{current_user.email}}
+
+    <div class="container">
         
-        <a href="{{ url_for('logout') }}">Logout</a> <br>
-        <img src="{{url_for('static', filename='images/david.png')}}">
+        <div id="information">
+            <h1> Hi, {{current_user.name}}</h1>
+
+            <div class="card">
+                <div class="card-header">
+                    Information
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Welcome to your profile!</h5>
+                  <p class="card-text">
+                    <strong> Name: </strong> 
+                    {{current_user.name}}
+                    <br>
+                    <strong> Last Name: </strong> 
+                    {{current_user.last_name}}
+                    <br>
+                    <strong> Username: </strong> 
+                    {{current_user.username}}
+                    <br>
+                    <strong> User ID: </strong> 
+                    {{current_user.id}}
+                    <br>
+                    <strong> Email:   </strong> 
+                    {{current_user.email}} 
+                    <br>
+                    {{form.profile_pic.label}}
+                    <br>
+                    {{form.profile_pic}}.</p>
+                  <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-sm">Logout</a>
+                </div>
+            </div>
+
+            <div id="profilepic">
+                <img src="{{url_for('static', filename='images/david.png')}}">
+            </div>
+
+        </div>
+        
+        
     </div>
+
+
 	
 </body>
 </html>
+{%endblock%}
