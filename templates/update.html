@@ -1,3 +1,5 @@
+{% extends 'navbar.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +12,7 @@
             {{ message }}
         {% endfor %}
 
-        <form method="POST" >
+        <form method="POST" action="/update/{{user_to_update.id}}" >
             {{ form.hidden_tag() }}
 
             {{ form.name.label }}
@@ -29,9 +31,17 @@
             <br>
             {{ form.email (value=user_to_update.email)}}
             <br>
-            {{ form. submit (value='submit')}}
+
+            {{form.profile_pic.label}}
+            <br>
+            {{form.profile_pic(value= user_to_update.profile_pic)}}
+            <br>
+            {{ form.submit (value='submit')}}
+
+
         </form>
 </div>
 	
 </body>
 </html>
+{% endblock %}

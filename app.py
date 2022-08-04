@@ -12,6 +12,8 @@ from flask_login import UserMixin, login_user, logout_user, LoginManager, login_
 from flask_migrate import Migrate
 from flask_cors import CORS, cross_origin
 from flask_session import Session
+from werkzeug.utils import secure_filename
+import uuid as uuid
 
 # create flask instance
 app = Flask(__name__)
@@ -25,18 +27,26 @@ app = Flask(__name__)
 # create socketio instance 
 socketio = SocketIO(app)
 
+
+
+
 # initilize databse
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 CORS(app)
 app.config['SECRET_KEY'] = '1a118f8864390243e3381fead7467eee'
 # create database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://nqbjwsvjatjsqi:ef1f39db0389f0fab79fd22643b8452afbc56f34bd9b497fd4b0ed9e4c6ecf90@ec2-44-205-64-253.compute-1.amazonaws.com:5432/d67tjlvrcobtqe'
 
 # Flask login stuff 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+# save image
+UPLOAD_FOLDER = 'static/images'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -109,11 +119,73 @@ def login():
     return render_template('login.html', form=form)
 
 # PROFILE PAGE
-@app.route('/profile')
+@app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
     form = RegistrationForm()
-    return render_template('profile.html', form=form)
+    id = current_user.id
+    user_to_update = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        user_to_update.name = request.form['name']
+        user_to_update.last_name = request.form['last_name']
+        user_to_update.username = request.form['username']
+        user_to_update.email = request.form['email']
+        print(request.files['profile_pic'])
+        
+        if request.files['profile_pic']:
+
+            user_to_update.profile_pic = request.files['profile_pic']
+
+            pic_filename = secure_filename(user_to_update.profile_pic.filename)
+
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+
+            saver = request.files['profile_pic']
+
+            user_to_update.profile_pic = pic_name
+
+            try:
+                db.session.commit()
+                print('commiting1')
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+                flash("User Updated Successfully!")
+                return render_template("profile.html", 
+					form=form,
+					user_to_update = user_to_update)
+            except:
+                print('erro1')
+                flash("Error!  Looks like there was a problem...try again!")
+                return render_template("profile.html", 
+					form=form,
+					user_to_update = user_to_update)
+        else:
+            print('commiting2')
+            db.session.commit()
+            flash("User Updated Successfully!")
+            return render_template("profile.html", 
+				form=form, 
+				user_to_update = user_to_update)
+    else:
+        print('no commit')
+        return render_template("profile.html", 
+				form=form,
+				user_to_update = user_to_update,
+				id = id)
+    return render_template('profile.html')
+
+
+
+            
+
+
+        
+        
+    
+        
+
+       
+
+    
 
 # LOGOUT
 @app.route('/logout', methods=['POST', 'GET'])
@@ -121,7 +193,7 @@ def profile():
 def logout():
     logout_user()
     flash('You have logged out')
-    redirect(url_for('login'))
+    return redirect(url_for('login'))
 
 
 # UPDATE PROFILE

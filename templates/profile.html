@@ -19,6 +19,12 @@
                 <div class="card-body">
                   <h5 class="card-title">Welcome to your profile!</h5>
                   <p class="card-text">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-8">
+
+
                     <strong> Name: </strong> 
                     {{current_user.name}}
                     <br>
@@ -34,19 +40,59 @@
                     <strong> Email:   </strong> 
                     {{current_user.email}} 
                     <br>
-                    {{form.profile_pic.label}}
+                    <strong> Image ID:   </strong> 
+                    {{current_user.profile_pic}}
                     <br>
-                    {{form.profile_pic}}.</p>
+
                   <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-sm">Logout</a>
+                  <a href="{{ url_for('update', id = current_user.id) }}" class="btn btn-secondary btn-sm">Update Profile</a>
+
+                  </div>
+                  <div class="col-4">
+                    {% if current_user.profile_pic%}
+                        <img src="{{ url_for('static', filename='images/' + current_user.profile_pic )}}     " +  alt="" width="150" align="right" >
+                    {% else %}
+     
+                        <img src='../static/images/david.png' alt="" width="150" align="right" >
+                    {% endif%}
+
+                  </div>
                 </div>
             </div>
 
-            <div id="profilepic">
-                <img src="{{url_for('static', filename='images/david.png')}}">
+                </div>
             </div>
-
         </div>
-        
+
+        <br>
+        <div class="card">
+            <div class="card-header">
+                Update Profile
+            </div>
+            <div class="card-body">
+                <form method="POST" action='/profile' enctype="multipart/form-data">
+                    
+                    {{ form.hidden_tag() }}
+                    <strong> Name: </strong> 
+                    {{ form.name (value = user_to_update.name)}}
+                    <br>
+                    <strong> Last Name: </strong> 
+                    {{ form.last_name (value=user_to_update.last_name) }}
+                    <br>
+                    <strong> Username: </strong> 
+                    {{ form.username (value=user_to_update.username) }}
+                    <br>
+                    <strong> Email:   </strong> 
+                    {{ form.email (value=user_to_update.email)}}
+                    <br>
+                    <strong> Profile Picture:   </strong>
+                    <br>
+                    {{form.profile_pic}}
+                    <br>
+                    {{form.submit (value='submit')}}
+                </form>
+            </div>
+        </div>
         
     </div>
 
