@@ -3,14 +3,12 @@ import os
 import spotipy
 import spotipy.util as util
 
-
-
-def connect_to_spotify():
+def connect_to_spotify(name):
 
     CLIENT_ID = '4d7fed3f38454c82abe7000ed50f7a13'
     CLIENT_SECRET = '9748fcc8cf064b7eb259f2adf4f43abe'
 
-    username = "pichardobrayan"
+    username = name
     scope = "user-read-currently-playing"
     redirect_uri = 'http://localhost:5000/profile'
 
