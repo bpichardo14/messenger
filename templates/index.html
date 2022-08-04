@@ -69,6 +69,7 @@
                     sent_msg.classList.add('sent_msg')
 
                     var paragraph = document.createElement('p')
+                    paragraph.innerHTML=`${data['username']} ${data['message']}`
 
                     sent_msg.appendChild(paragraph)
 
