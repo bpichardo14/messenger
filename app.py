@@ -1,6 +1,7 @@
 from audioop import cross
 from crypt import methods
 from email.utils import format_datetime
+from pydoc import render_doc
 from click import confirm
 from flask import Flask, render_template, url_for, redirect, flash, session, request
 from flask_socketio import SocketIO, emit
@@ -14,6 +15,10 @@ from flask_cors import CORS, cross_origin
 from flask_session import Session
 from werkzeug.utils import secure_filename
 import uuid as uuid
+import spotipy
+import spotipy.util as util
+from apicall import connect_to_spotify
+
 
 # create flask instance
 app = Flask(__name__)
@@ -47,6 +52,7 @@ login_manager.login_view = 'login'
 # save image
 UPLOAD_FOLDER = 'static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -118,10 +124,12 @@ def login():
 
     return render_template('login.html', form=form)
 
+
 # PROFILE PAGE
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
+    song = connect_to_spotify()
     form = RegistrationForm()
     id = current_user.id
     user_to_update = Users.query.get_or_404(id)
@@ -170,22 +178,10 @@ def profile():
         return render_template("profile.html", 
 				form=form,
 				user_to_update = user_to_update,
-				id = id)
+				id = id, song=song)
     return render_template('profile.html')
 
 
-
-            
-
-
-        
-        
-    
-        
-
-       
-
-    
 
 # LOGOUT
 @app.route('/logout', methods=['POST', 'GET'])
@@ -216,6 +212,28 @@ def update(id):
             return render_template('update.html', form=form, user_to_update=user_to_update)
     else:
         return render_template('update.html', form=form, user_to_update=user_to_update)
+
+# # CONNECT TO SPOTIFY
+# @app.route('/spotify', methods=['POST', 'GET'])
+# def connect_to_spotify():
+#     form = RegistrationForm()
+#     CLIENT_ID = '4d7fed3f38454c82abe7000ed50f7a13'
+#     CLIENT_SECRET = '9748fcc8cf064b7eb259f2adf4f43abe'
+
+#     username = "pichardobrayan"
+#     scope = "user-read-currently-playing"
+#     redirect_uri = 'http://localhost:5000/callback/'
+
+#     token = util.prompt_for_user_token(username, scope, CLIENT_ID, CLIENT_SECRET, redirect_uri)
+
+#     sp = spotipy.Spotify(auth=token)
+#     currentsong = sp.currently_playing()
+
+#     song_name = currentsong['item']['name']
+#     song_artist = currentsong['item']['artists'][0]['name']
+#     listening_to = "Now playing {} by {}".format(song_name, song_artist)
+
+#     return render_template('profile.html', form=form, listening_to=listening_to)
 
 # 3. listens for message sent by client
 @socketio.on('message')
