@@ -12,7 +12,7 @@ def connect_to_spotify(name):
 
     username = name
     scope = "user-read-currently-playing"
-    redirect_uri = 'http://localhost:5000/profile/callback/'
+    redirect_uri = 'http://localhost:5000/callback/'
 
     token = util.prompt_for_user_token(username, scope, CLIENT_ID, CLIENT_SECRET, redirect_uri)
 

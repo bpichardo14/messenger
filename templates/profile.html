@@ -44,15 +44,13 @@
                     {{current_user.profile_pic}}
                     <br>
 
-                    {% if song %}
-                    <strong> Status:   </strong> 
+                    <strong> Status: </strong> 
                         {{song}}
                     <br>
-                    {%endif%}
 
                   <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-sm">Logout</a>
                   <!-- <a href="{{ url_for('update', id = current_user.id) }}" class="btn btn-secondary btn-sm">Update Profile</a> -->
-                  <a href="{{ url_for('profile') }}" class="btn btn-success btn-sm">Connect to Spotify</a>
+                  <a href="{{ url_for('profile') }}" class="btn btn-success btn-sm" method="POST">Connect to Spotify</a>
 
                   </div>
                   <div class="col-4">
@@ -60,7 +58,7 @@
                         <img src=" {{ url_for('static', filename='images/' + current_user.profile_pic) }}" width="150" align="right" alt="">
                     
                     {% else %}
-                        <img src=‘../static/images/david.png’ alt=“” width= "150" align=“right” >
+                        <img src=" {{ url_for('static', filename='images/davig.png' )}}" alt=“” width= "150" align=“right” >
                     {% endif%}
 
                   </div>

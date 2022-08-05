@@ -126,8 +126,9 @@ def profile():
     form = RegistrationForm()
     id = current_user.id
     user_to_update = Users.query.get_or_404(id)
+    song = connect_to_spotify(current_user.username)
     if request.method == 'POST':
-        song = connect_to_spotify(current_user.username)
+        
         user_to_update.name = request.form['name']
         user_to_update.last_name = request.form['last_name']
         user_to_update.username = request.form['username']
@@ -153,7 +154,7 @@ def profile():
                 flash("User Updated Successfully!")
                 return render_template("profile.html", 
 					form=form,
-					user_to_update = user_to_update)
+					user_to_update = user_to_update, song=song)
             except:
                 print('erro1')
                 flash("Error!  Looks like there was a problem...try again!")
@@ -172,7 +173,7 @@ def profile():
         return render_template("profile.html", 
 				form=form,
 				user_to_update = user_to_update,
-				id = id)
+				id = id, song=song)
     return render_template('profile.html')
 
 
