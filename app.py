@@ -133,7 +133,7 @@ def profile():
         user_to_update.last_name = request.form['last_name']
         user_to_update.username = request.form['username']
         user_to_update.email = request.form['email']
-        print(request.files['profile_pic'])
+        # print(request.files['profile_pic'])
         
         if request.files['profile_pic']:
 
