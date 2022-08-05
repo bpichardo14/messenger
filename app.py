@@ -166,13 +166,13 @@ def profile():
             flash("User Updated Successfully!")
             return render_template("profile.html", 
 				form=form, 
-				user_to_update = user_to_update)
+				user_to_update = user_to_update, song=song )
     else:
         print('no commit')
         return render_template("profile.html", 
 				form=form,
 				user_to_update = user_to_update,
-				id = id, song=song)
+				id = id)
     return render_template('profile.html')
 
 
