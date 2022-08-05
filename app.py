@@ -86,6 +86,7 @@ def register():
         user = Users(name=form.name.data, last_name=form.last_name.data, username=form.username.data, email=form.email.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
+        
     
 
     return render_template('register.html', form=form, username=username, email=email, password=password, 
@@ -126,9 +127,8 @@ def profile():
     form = RegistrationForm()
     id = current_user.id
     user_to_update = Users.query.get_or_404(id)
-    song = connect_to_spotify(current_user.username)
     if request.method == 'POST':
-        
+        song = connect_to_spotify(current_user.username)
         user_to_update.name = request.form['name']
         user_to_update.last_name = request.form['last_name']
         user_to_update.username = request.form['username']
