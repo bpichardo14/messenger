@@ -123,7 +123,6 @@ def login():
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
-    song = connect_to_spotify(current_user.username)
     form = RegistrationForm()
     id = current_user.id
     user_to_update = Users.query.get_or_404(id)
