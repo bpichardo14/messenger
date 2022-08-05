@@ -7,41 +7,39 @@
 </head>
 <body>
     <div class="container" >
-        <h1> Registration Page </h1>
+        <h1 style="text-align:center;"> Registration Page </h1>
 
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
 
         <form method="POST" >
             {{ form.hidden_tag() }}
 
             {{ form.name.label }}
             <br>
-            {{ form.name }}
+            {{ form.name(class="form-control") }}
             <br>
             {{ form.last_name.label}}
             <br>
-            {{ form.last_name }}
+            {{ form.last_name(class="form-control") }}
             <br>
             {{ form.username.label }}
             <br>
-            {{ form.username }}
+            {{ form.username(class="form-control") }}
+            <small id="emailHelp" class="form-text text-muted">Please type in the username associted with you Spotify account </small>
             <br>
             {{ form.email.label }} 
             <br>
-            {{ form.email}}
+            {{ form.email(class="form-control")}}
             <br>
             {{ form.password.label }}
             <br>
-            {{ form.password }}
+            {{ form.password(class="form-control") }}
             <br>
             {{ form.confirm_password.label }}
             <br>
-            {{ form.confirm_password}}
+            {{ form.confirm_password(class="form-control")}}
             <br>
             <br>
-            {{ form. submit }}
+            {{ form. submit(class="btn btn-primary") }}
 
         </form>
 </div>

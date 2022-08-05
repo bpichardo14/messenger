@@ -4,31 +4,30 @@
 <html lang="en">
 <head>
 	<title>Login</title>
-    <!-- <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}"> -->
+    <!-- <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='login.css') }}"> -->
 </head>
 <body>
     <div class="container" >
-        <h1> Login Page </h1>
+        <br>
+        <h1 style="text-align:center;"> Login Page </h1>
         {% for message in get_flashed_messages() %}
             {{ message }}
         {% endfor %}
         <form method="POST" >
             {{ form.hidden_tag() }}
 
-            {{ form.username.label }}
+            {{ form.username.label() }}
             <br>
-            {{ form.username }}
+            {{ form.username(class="form-control")}}
             <br>
             {{ form.password.label }}
             <br>
-            {{ form.password }}
+            {{ form.password(class="form-control")}}
             <br>
-            {{ form. submit }}
-            
-            
+            {{ form. submit(class="btn btn-primary") }}
         </form>
-</div>
-	
+
+    </div>
 </body>
 </html>
 {% endblock %}

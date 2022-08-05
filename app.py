@@ -58,7 +58,7 @@ class Users(db.Model, UserMixin):
     name = db.Column(db.String(50), nullable=False, unique=False)
     last_name = db.Column(db.String(50), nullable=False, unique=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False, unique=False)
     profile_pic = db.Column(db.String(), nullable=True)
 
 
@@ -132,6 +132,7 @@ def profile():
     id = current_user.id
     user_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
+        song = connect_to_spotify(current_user.username)
         user_to_update.name = request.form['name']
         user_to_update.last_name = request.form['last_name']
         user_to_update.username = request.form['username']
