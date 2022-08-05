@@ -170,12 +170,11 @@ def profile():
 				user_to_update = user_to_update, song=song )
     else:
         print('no commit')
-        # song = connect_to_spotify(current_user.username)
+        song = connect_to_spotify(current_user.username)
         return render_template("profile.html", 
 				form=form,
 				user_to_update = user_to_update,
-				id = id)
-
+				id = id, song=song)
     return render_template('profile.html')
 
 
@@ -193,44 +192,55 @@ def logout():
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
     form = RegistrationForm()
+    id = current_user.id
     user_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
+        song = connect_to_spotify(current_user.username)
         user_to_update.name = request.form['name']
         user_to_update.last_name = request.form['last_name']
         user_to_update.username = request.form['username']
-        user_to_update.email = request.form['email']
-        
-        try:
+        user_to_update.email = request.form['email']   
+        if request.files['profile_pic']:
+
+            user_to_update.profile_pic = request.files['profile_pic']
+
+            pic_filename = secure_filename(user_to_update.profile_pic.filename)
+
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+
+            saver = request.files['profile_pic']
+
+            user_to_update.profile_pic = pic_name
+
+            try:
+                db.session.commit()
+                print('commiting1')
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+                flash("User Updated Successfully!")
+                return render_template("profile.html", 
+					form=form,
+					user_to_update = user_to_update, song=song)
+            except:
+                print('erro1')
+                flash("Error!  Looks like there was a problem...try again!")
+                return render_template("profile.html", 
+					form=form,
+					user_to_update = user_to_update)
+        else:
+            print('commiting2')
             db.session.commit()
-            flash('User updated successfuly')
-            return render_template('update.html', form=form, user_to_update=user_to_update)
-        except:
-            flash('Error! Looks like there was problem, but try again!')
-            return render_template('update.html', form=form, user_to_update=user_to_update)
+            flash("User Updated Successfully!")
+            return render_template("profile.html", 
+				form=form, 
+				user_to_update = user_to_update, song=song )
     else:
-        return render_template('update.html', form=form, user_to_update=user_to_update)
-
-# # CONNECT TO SPOTIFY
-# @app.route('/spotify', methods=['POST', 'GET'])
-# def connect_to_spotify():
-#     form = RegistrationForm()
-#     CLIENT_ID = '4d7fed3f38454c82abe7000ed50f7a13'
-#     CLIENT_SECRET = '9748fcc8cf064b7eb259f2adf4f43abe'
-
-#     username = "pichardobrayan"
-#     scope = "user-read-currently-playing"
-#     redirect_uri = 'http://localhost:5000/callback/'
-
-#     token = util.prompt_for_user_token(username, scope, CLIENT_ID, CLIENT_SECRET, redirect_uri)
-
-#     sp = spotipy.Spotify(auth=token)
-#     currentsong = sp.currently_playing()
-
-#     song_name = currentsong['item']['name']
-#     song_artist = currentsong['item']['artists'][0]['name']
-#     listening_to = "Now playing {} by {}".format(song_name, song_artist)
-
-#     return render_template('profile.html', form=form, listening_to=listening_to)
+        print('no commit')
+        # song = connect_to_spotify(current_user.username)
+        return render_template("profile.html", 
+				form=form,
+				user_to_update = user_to_update,
+				id = id)
+    return render_template('profile.html')
 
 # 3. listens for message sent by client
 @socketio.on('message')

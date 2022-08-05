@@ -5,43 +5,34 @@
 <head>
 </head>
 <body>
-    <div class="container" >
-        <h1> Update User </h1>
-
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-
-        <form method="POST" action="/update/{{user_to_update.id}}" >
-            {{ form.hidden_tag() }}
-
-            {{ form.name.label }}
-            <br>
-            {{ form.name (value = user_to_update.name)}}
-            <br>
-            {{ form.last_name.label}}
-            <br>
-            {{ form.last_name (value=user_to_update.last_name) }}
-            <br>
-            {{ form.username.label}}
-            <br>
-            {{ form.username (value=user_to_update.username) }}
-            <br>
-            {{ form.email.label }} 
-            <br>
-            {{ form.email (value=user_to_update.email)}}
-            <br>
-
-            {{form.profile_pic.label}}
-            <br>
-            {{form.profile_pic(value= user_to_update.profile_pic)}}
-            <br>
-            {{ form.submit (value='submit')}}
-
-
-        </form>
-</div>
-	
+    <div class="card">
+        <div class="card-header">
+            Update Profile
+        </div>
+        <div class="card-body">
+            <form method="POST" action='/updatepage/{{ current_user.id }}' enctype="multipart/form-data">
+                
+                {{ form.hidden_tag() }}
+                <strong> Name: </strong> 
+                {{ form.name (value = user_to_update.name)}}
+                <br>
+                <strong> Last Name: </strong> 
+                {{ form.last_name (value=user_to_update.last_name) }}
+                <br>
+                <strong> Username: </strong> 
+                {{ form.username (value=user_to_update.username) }}
+                <br>
+                <strong> Email:   </strong> 
+                {{ form.email (value= user_to_update.email)}}
+                <br>
+                <strong> Profile Picture:   </strong>
+                <br>
+                {{form.profile_pic}}
+                <br>
+                {{form.submit (value='submit')}}
+            </form>
+        </div>
+    </div>
 </body>
 </html>
 {% endblock %}
