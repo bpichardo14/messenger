@@ -170,6 +170,7 @@ def profile():
 				user_to_update = user_to_update, song=song )
     else:
         print('no commit')
+        song = connect_to_spotify(current_user.username)
         return render_template("profile.html", 
 				form=form,
 				user_to_update = user_to_update,
